@@ -1,0 +1,14 @@
+[
+    {
+        "username": "tom",
+        "password": "$pbkdf2-sha256$29000$c26NUWrtnTMmBICwVgoB4A$BtcnMTs4140qzlJwBWmR3LgkMiEVVqYV/pPn0HkBhik",
+        "is_superuser": false,
+        "status": true
+    },
+    {
+        "username": "admin",
+        "password": "$pbkdf2-sha256$29000$ilFKCSHE.J8TImTM.d87Bw$1V7ogjCU8W1dfVoS/uzFzP58ehaKxQX.HXfGqBPTUQA",
+        "is_superuser": false,
+        "status": true
+    }
+]
