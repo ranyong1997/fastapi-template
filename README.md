@@ -102,8 +102,8 @@ git@github.com:ranyong1997/fastapi-template.git
 ### 3、安装依赖
 
 ```python
-cd fastapi - template
-pip3 install - r requirements.txt
+cd fastapi-template
+pip3 install -r requirements.txt
 ```
 ### 4、启动mysql等基础设施
 > 如果不习惯使用 docker 也可以自己手动搞定这些
