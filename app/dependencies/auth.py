@@ -13,8 +13,9 @@ from typing import Optional
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
-from app.config import settings
-from app.libs.db_lib import db
+from ..config import settings
+from ..libs.db_lib import db
+from ..utils.logger import Log
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=settings.swagger_ui_oauth2_redirect_url)
 
@@ -47,3 +48,4 @@ def auth_depend(token: str = Depends(oauth2_scheme)):
     if user is None:
         return {"msg": "认证不通过"}
     return user
+

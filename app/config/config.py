@@ -9,7 +9,6 @@
 import os
 from pathlib import Path
 from typing import List
-
 from pydantic import BaseSettings
 
 
@@ -45,6 +44,13 @@ class Settings(BaseSettings):
     base_dir = Path(__file__).absolute().parent.parent.parent
     # 日志目录
     log_dir = base_dir / 'logs'
+    # 日志名
+    log_info = 'log_info'
+    log_err = 'log_error'
+    log_warning = 'log_warning'
+    log_debug = 'log_debug'
+    log_exception = 'log_exception'
+    log_name = os.path.join(log_dir, 'fastapi_template.log')
     # 静态资源
     static_dir = base_dir / 'static'
     static_url_prefix: str = '/static'
