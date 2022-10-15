@@ -11,6 +11,7 @@ from starlette.staticfiles import StaticFiles
 from .routers import custom_docs, api_router
 from .config import settings
 from .views import views_router
+from . import app, init_logging
 
 # 实例化fastapi对象
 app = FastAPI(docs_url=None,
@@ -32,6 +33,16 @@ app.include_router(api_router)
 
 # 挂在view路由
 app.include_router(views_router)
+
+# 挂在loguru路由
+logger = init_logging()
+
+
+
+
+
+
+
 # async def send_email(email: str, msg: str):
 #     print(f"send email to {email},{msg=},start at:{datetime.datetime.now()}")
 #     await asyncio.sleep(1)

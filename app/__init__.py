@@ -10,13 +10,12 @@ import os
 import sys
 import logging
 from fastapi import FastAPI, Request, status
-from loguru import logger
 from starlette.responses import JSONResponse
+from loguru import logger
 from .config import settings
 from pprint import pformat
 from loguru._defaults import LOGURU_FORMAT
 from starlette.middleware.cors import CORSMiddleware
-from .utils import logger
 from starlette.middleware.errors import ServerErrorMiddleware
 
 app = FastAPI()
@@ -132,21 +131,28 @@ def init_logging():
     # 这里啊错做事为了改变uvicorn默认的logger,采用loguru的logger
     intercept_handler = InterceptHandler()
     logging.getLogger("uvicorn").handlers = [intercept_handler]
-    # 为sakura添加一个info log的文件,主要记录debug和info级别的日志
-    log_info = os.path.join(settings.LOG_DIR, f"{settings.log_info}.log")
-    # 为sakura添加一个error log的文件,主要记录warning和error级别的日志
-    log_err = os.path.join(settings.LOG_DIR, f"{settings.log_err}.log")
-    logger.add(log_info, enqueue=True, rotation="20 MB", level="DEBUG", filter=make_filter(settings.log_info))
-    logger.add(log_err, enqueue=True, rotation="20 MB", level="ERROR", filter=make_filter(settings.log_err))
+    # 为项目添加一个info log的文件,主要记录debug和info级别的日志
+    app_info = os.path.join(settings.log_dir, f"{settings.log_info}.log")
+    app_debug = os.path.join(settings.log_dir, f"{settings.log_debug}.log")
+    # 为项目添加一个error log的文件,主要记录warning和error级别的日志
+    app_error = os.path.join(settings.log_dir, f"{settings.log_err}.log")
+    app_warning = os.path.join(settings.log_dir, f"{settings.log_warning}.log")
+    logger.add(app_info, enqueue=True, rotation="20 MB", level="DEBUG", filter=make_filter(settings.log_info))
+    logger.add(app_error, enqueue=True, rotation="20 MB", level="WARNING", filter=make_filter(settings.log_err))
+    logger.add(app_warning, enqueue=True, rotation="20 MB", level="WARNING", filter=make_filter(settings.log_warning))
+    logger.add(app_debug, enqueue=True, rotation="20 MB", level="DEBUG", filter=make_filter(settings.log_debug))
 
     # 配置loguru的日志句柄,sink代表输出目标
     logger.configure(
         handlers=[
             {"sink": sys.stdout, "level": logging.DEBUG, "format": format_record},
-            {"sink": log_info, "level": logging.INFO, "format": INFO_FORMAT,
-             "filter": make_filter(settings.log_info)},
-            {"sink": log_err, "level": logging.WARNING, "format": ERROR_FORMAT,
-             "filter": make_filter(settings.log_err)}
+            {"sink": app_info, "level": logging.INFO, "format": INFO_FORMAT, "filter": make_filter(settings.log_info)},
+            {"sink": app_warning, "level": logging.WARNING, "format": ERROR_FORMAT,
+             "filter": make_filter(settings.log_warning)},
+            {"sink": app_error, "level": logging.ERROR, "format": ERROR_FORMAT,
+             "filter": make_filter(settings.log_err)},
+            {"sink": app_debug, "level": logging.DEBUG, "format": ERROR_FORMAT,
+             "filter": make_filter(settings.log_debug)}
         ]
     )
     return logger

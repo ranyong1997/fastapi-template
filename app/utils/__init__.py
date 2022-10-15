@@ -7,7 +7,5 @@
 # @Software: PyCharm
 # @desc    :
 from .hash_lib import Hash
-from .logger import Log
 
 hash_tool = Hash()
-log_tool = Log()

@@ -12,7 +12,6 @@ from ..libs.db_lib import db
 from ..utils import hash_tool
 from ..models.user import UserInDB
 from ..schemas.user import UserSignUp, UserInfo
-from ..utils.logger import Log
 
 router = APIRouter(prefix="/user", tags=['用户接口'])
 

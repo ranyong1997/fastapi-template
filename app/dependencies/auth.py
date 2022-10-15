@@ -8,14 +8,13 @@
 # @desc    :
 import traceback
 import jwt
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 from typing import Optional
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
 from ..config import settings
 from ..libs.db_lib import db
-from ..utils.logger import Log
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=settings.swagger_ui_oauth2_redirect_url)
 
@@ -23,12 +22,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=settings.swagger_ui_oauth2_redirec
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(seconds=settings.jwt_exp_seconds)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
-    return encoded_jwt
+        expire = datetime.now(timezone.utc) + timedelta(seconds=settings.jwt_exp_seconds)
+    to_encode["exp"] = expire
+    return jwt.encode(to_encode, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
 
 
 def auth_depend(token: str = Depends(oauth2_scheme)):
@@ -45,7 +43,4 @@ def auth_depend(token: str = Depends(oauth2_scheme)):
     # 第三步 根据payload 中的信息去数据库中找到对应的用户
     username = payload.get('username')
     user = db.get_or_none(username)
-    if user is None:
-        return {"msg": "认证不通过"}
-    return user
-
+    return {"msg": "认证不通过"} if user is None else user
