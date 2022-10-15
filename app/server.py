@@ -5,7 +5,7 @@
 # @Site    : 
 # @File    : server.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 配置文件
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 from .routers import custom_docs, api_router
@@ -28,20 +28,17 @@ app.mount(settings.media_url_prefix, StaticFiles(directory=settings.media_dir))
 # 自定义docs界面
 custom_docs(app)
 
-# 挂在api路由
+# 挂载api路由
 app.include_router(api_router)
 
-# 挂在view路由
+# 挂载view路由
 app.include_router(views_router)
 
-# 挂在loguru路由
+# 挂载loguru路由
 logger = init_logging()
-
-
-
-
-
-
+logger.bind(name=None).opt(ansi=True).success(
+    f"fastapi 正在运行环境: <blue>{settings.FASTAPI_ENV} 网址: http://localhost:8000/docs</blue>")
+logger.bind(name=None).success(settings.BANNER)
 
 # async def send_email(email: str, msg: str):
 #     print(f"send email to {email},{msg=},start at:{datetime.datetime.now()}")

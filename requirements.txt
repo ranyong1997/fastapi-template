@@ -1,5 +1,4 @@
 fastapi[all]==0.75.2
-tortoise-orm[aiomysql]==0.19.2
 aerich==0.6.3
 typer[all]==0.6.1
 passlib==1.7.4

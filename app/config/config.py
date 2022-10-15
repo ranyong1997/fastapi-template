@@ -5,17 +5,22 @@
 # @Site    : 
 # @File    : config.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 配置文件
 import os
 from pathlib import Path
 from typing import List
 from pydantic import BaseSettings
 
+# 项目根目录 父一级再父一级再父一级 root根路径
+base_dir = Path(__file__).absolute().parent.parent.parent
+
 
 class Settings(BaseSettings):
-    class Config:
-        # 环境变量文件
-        env_file = ".env"
+    class Dev_Config:
+        env_file = os.path.join(base_dir, "conf", "dev.env")
+
+    class Pro_Config:
+        env_file = os.path.join(base_dir, "conf", "pro.env")
 
     # debug模式
     debug: bool = True
@@ -26,11 +31,11 @@ class Settings(BaseSettings):
     # token过期时间，单位：秒
     jwt_exp_seconds: int = 60 * 60
     # 项目标题
-    project_title = "FastAPI 后端"
+    project_title = "FastAPI 后端模板"
     # 项目描述
-    project_description = "一个牛逼的API后端"
+    project_description = "自用后端模板，开发简单"
     # 项目版本
-    project_version = '0.0.1'
+    project_version = '0.0.2'
     # url的前缀
     url_prefix: str = "/api/v1"
     # host
@@ -40,8 +45,6 @@ class Settings(BaseSettings):
     enable_test_router: bool = True
     # swagger docs 后登录重定向地址
     swagger_ui_oauth2_redirect_url: str = f"{url_prefix}/test/token"
-    # 项目根目录 父一级再父一级再父一级
-    base_dir = Path(__file__).absolute().parent.parent.parent
     # 日志目录
     log_dir = base_dir / 'logs'
     # 日志名
@@ -54,6 +57,9 @@ class Settings(BaseSettings):
     # 静态资源
     static_dir = base_dir / 'static'
     static_url_prefix: str = '/static'
+    # 环境
+    env_dir = base_dir / 'conf'
+    env_url_prefix: str = '/conf'
     # 用户上传目录
     media_dir = base_dir / 'media'
     media_url_prefix: str = '/media'
@@ -69,3 +75,14 @@ class Settings(BaseSettings):
     session_secret_key = "sadehewagbwft34ba"
     session_cookie = "session_id"
     session_max_age = 14 * 24 * 60 * 60
+    # 获取sakura环境变量
+    FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
+    # 如果fastapi_env存在且为pro
+    Config = Pro_Config if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else Dev_Config
+    BANNER = """
+      ____|             |                 _)      __ __|                        |         |         
+      |     _` |   __|  __|   _` |  __ \   |         |   _ \  __ `__ \   __ \   |   _` |  __|   _ \ 
+      __|  (   | \__ \  |    (   |  |   |  | _____|  |   __/  |   |   |  |   |  |  (   |  |     __/ 
+     _|   \__,_| ____/ \__| \__,_|  .__/  _|        _| \___| _|  _|  _|  .__/  _| \__,_| \__| \___| 
+                                   _|                                   _|                          
+    """

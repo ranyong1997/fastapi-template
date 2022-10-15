@@ -124,9 +124,9 @@ python main.py
 - [x] swagger文件加载过慢
 - [X] 基础接口调试
 - [X] 开发接口调试/隐藏
+- [X] 使用loguru日志模块
 
 待实现功能:
-- [ ] 使用loguru日志模块
 - [ ] 使用SQLAlchemy数据库
 ## 截图
 ![image-20221013164104847](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202210131641293.png)

@@ -5,7 +5,7 @@
 # @Site    : 
 # @File    : server.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 项目启动文件
 import uvicorn
 from app.config import settings
 
