@@ -11,7 +11,7 @@ from starlette.staticfiles import StaticFiles
 from .routers import custom_docs, api_router
 from .config import settings
 from .views import views_router
-from . import app, init_logging
+from . import init_logging
 
 # 实例化fastapi对象
 app = FastAPI(docs_url=None,

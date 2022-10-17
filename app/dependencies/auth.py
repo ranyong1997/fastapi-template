@@ -15,6 +15,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
 from ..config import settings
 from ..libs.db_lib import db
+from ..utils import log
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=settings.swagger_ui_oauth2_redirect_url)
 
@@ -39,6 +40,7 @@ def auth_depend(token: str = Depends(oauth2_scheme)):
         local_vars = locals()
         exc_msg += f"{locals()=}" + "\n"
         exc_msg += "-" * 100
+        log.error(JWTError)
         return HTTPException(status_code=401, detail="token已失效，请重新登录！")
     # 第三步 根据payload 中的信息去数据库中找到对应的用户
     username = payload.get('username')

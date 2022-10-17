@@ -12,6 +12,7 @@ from ..libs.db_lib import db
 from ..utils import hash_tool
 from ..models.user import UserInDB
 from ..schemas.user import UserSignUp, UserInfo
+from ..utils import log
 
 router = APIRouter(prefix="/user", tags=['用户接口'])
 
@@ -23,7 +24,7 @@ def signup(form_data: UserSignUp = Body(...)):
     # 根据用户名去数据库里面查询对应的 user
     user = db.get_or_none(username)
     if user is not None:
-        # Log.error(f"当前用户名:{username}被占用")
+        log.warning(f"当前用户名【{username}】已经被占用")
         return {"msg": "当前用户名已经被占用"}
     # 保存到数据库 哈希加密
     encode_pwd = hash_tool.encrypt_password(password)

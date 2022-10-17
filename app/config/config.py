@@ -17,9 +17,11 @@ base_dir = Path(__file__).absolute().parent.parent.parent
 
 class Settings(BaseSettings):
     class Dev_Config:
+        # 开发者模式
         env_file = os.path.join(base_dir, "conf", "dev.env")
 
     class Pro_Config:
+        # 正式环境
         env_file = os.path.join(base_dir, "conf", "pro.env")
 
     # debug模式
@@ -49,10 +51,9 @@ class Settings(BaseSettings):
     log_dir = base_dir / 'logs'
     # 日志名
     log_info = 'log_info'
-    log_err = 'log_error'
+    log_error = 'log_error'
     log_warning = 'log_warning'
     log_debug = 'log_debug'
-    log_exception = 'log_exception'
     log_name = os.path.join(log_dir, 'fastapi_template.log')
     # 静态资源
     static_dir = base_dir / 'static'

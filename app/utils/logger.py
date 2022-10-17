@@ -19,8 +19,8 @@ class Log(object):
         """
         :param name: 业务名称
         """
-        if not os.path.exists(settings.LOG_DIR):
-            os.mkdir(settings.LOG_DIR)
+        if not os.path.exists(settings.log_dir):
+            os.mkdir(settings.log_dir)
         self.business = name
 
     def info(self, msg: str):
@@ -29,9 +29,9 @@ class Log(object):
         :param msg:
         :return:
         """
-        file_name, line, func, _, = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_info, func=func, line=line, business=self.business, filename=file_name).info(
-            msg)
+        file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
+        logger.bind(name=settings.log_info, func=func, line=line, business=self.business,
+                    filename=file_name).info(msg)
 
     def error(self, msg: str):
         """
@@ -40,7 +40,7 @@ class Log(object):
         :return:
         """
         file_name, line, func, _, = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_err, func=func, line=line, business=self.business, filename=file_name).error(
+        logger.bind(name=settings.log_error, func=func, line=line, business=self.business, filename=file_name).error(
             msg)
 
     def warning(self, msg: str):
@@ -50,7 +50,8 @@ class Log(object):
         :return:
         """
         file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_warning, func=func, line=line, business=self.business, filename=file_name).error(
+        logger.bind(name=settings.log_warning, func=func, line=line, business=self.business,
+                    filename=file_name).warning(
             msg)
 
     def debug(self, msg: str):
@@ -60,8 +61,8 @@ class Log(object):
         :return:
         """
         file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_debug, func=func, line=line, business=self.business, filename=file_name).debug(
-            msg)
+        logger.bind(name=settings.log_debug, func=func, line=line, business=self.business,
+                    filename=file_name).debug(msg)
 
     def exception(self, msg: str):
         """

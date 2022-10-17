@@ -13,7 +13,7 @@ from ..config import settings
 from ..dependencies import create_access_token
 from ..libs.db_lib import db
 from ..utils import hash_tool
-
+from ..utils import log
 router = APIRouter()
 
 
@@ -36,9 +36,11 @@ def custom_docs(application: FastAPI):
         # 第二步 通过用户名去数据库中查找对应的user
         user = db.get_or_none(username)
         if user is None:
+            log.error("登录失败，用户名与密码不匹配")
             return {"msg": "登录失败，用户名与密码不匹配"}
         # 第三步 检查密码
         if not hash_tool.check_password(user.password, password):
+            log.error("登录失败，用户名与密码不匹配")
             return {"msg": "登录失败，用户名与密码不匹配"}
         # 第四步 生成token
         token = create_access_token({"username": user.username})
