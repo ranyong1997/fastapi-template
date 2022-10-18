@@ -15,27 +15,23 @@ from pydantic import BaseSettings
 base_dir = Path(__file__).absolute().parent.parent.parent
 
 
-
-
 class Settings(BaseSettings):
-    global MYSQL_USER, MYSQL_PWD, MYSQL_HOST, MYSQL_PORT
-
-    class Dev_Config:
-        # 开发者模式
-        env_file = os.path.join(base_dir, "conf", "dev.env")
-
-    class Pro_Config:
-        # 正式环境
-        env_file = os.path.join(base_dir, "conf", "pro.env")
+    # class Dev_Config():
+    #     # 开发者模式
+    #     env_file = os.path.join(base_dir, "conf", "dev.env")
+    #
+    # class Pro_Config():
+    #     # 正式环境
+    #     env_file = os.path.join(base_dir, "conf", "pro.env")
 
     # debug模式
     debug: bool = True
     # 数据库—server
-    MYSQL_HOST: str  # 数据库主机
-    MYSQL_PORT: int  # 数据库端口
-    MYSQL_USER: str  # 数据库用户名
-    MYSQL_PWD: str  # 数据库密码
-    DBNAME: str  # 数据库表名
+    MYSQL_HOST: str = None  # 数据库主机
+    MYSQL_PORT: int = None  # 数据库端口
+    MYSQL_USER: str = None  # 数据库用户名
+    MYSQL_PWD: str = None  # 数据库密码
+    DBNAME: str = None  # 数据库表名
     # sqlalchemy_server
     SQLALCHEMY_DATABASE_URI: str = ''
     # 异步URI
@@ -91,15 +87,15 @@ class Settings(BaseSettings):
     session_secret_key = "sadehewagbwft34ba"
     session_cookie = "session_id"
     session_max_age = 14 * 24 * 60 * 60
-    # 获取sakura环境变量
-    FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
-    # 如果fastapi_env存在且为pro
-    Config = Pro_Config if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else Dev_Config
-    # 初始化 sqlalchemy（由 apscheduler 使用）
-    Config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PWD}@{MYSQL_HOST}:{MYSQL_PORT}/{DBNAME}'
-    # 初始化sqlalchemy
-    Config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{MYSQL_USER}:{MYSQL_PWD}' \
-                                  f'@{MYSQL_HOST}:{MYSQL_PORT}/{DBNAME}'
+    # # 获取sakura环境变量
+    # FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
+    # # 如果fastapi_env存在且为pro
+    # Config = Pro_Config if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else Dev_Config
+    # # 初始化 sqlalchemy（由 apscheduler 使用）
+    # Config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PWD}@{MYSQL_HOST}:{MYSQL_PORT}/{DBNAME}'
+    # # 初始化sqlalchemy
+    # Config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{MYSQL_USER}:{MYSQL_PWD}' \
+    #                               f'@{MYSQL_HOST}:{MYSQL_PORT}/{DBNAME}'
     BANNER = """
       ____|             |                 _)      __ __|                        |         |         
       |     _` |   __|  __|   _` |  __ \   |         |   _ \  __ `__ \   __ \   |   _` |  __|   _ \ 
@@ -107,3 +103,27 @@ class Settings(BaseSettings):
      _|   \__,_| ____/ \__| \__,_|  .__/  _|        _| \___| _|  _|  _|  .__/  _| \__,_| \__| \___| 
                                    _|                                   _|                          
     """
+
+
+class Dev_Config(Settings):
+    # 开发者模式
+    class Config:
+        env_file = os.path.join(base_dir, "conf", "dev.env")
+
+
+class Pro_Config(Settings):
+    # 正式环境
+    class Config:
+        env_file = os.path.join(base_dir, "conf", "pro.env")
+
+
+# 获取sakura环境变量
+FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
+
+# 如果fastapi_env存在且为pro
+Config = Pro_Config() if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else Dev_Config()
+# 初始化 sqlalchemy（由 apscheduler 使用）
+Config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{Config.MYSQL_USER}:{Config.MYSQL_PWD}@{Config.MYSQL_HOST}:{Config.MYSQL_PORT}/{Config.DBNAME}'
+# 初始化sqlalchemy
+Config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{Config.MYSQL_USER}:{Config.MYSQL_PWD}' \
+                              f'@{Config.MYSQL_HOST}:{Config.MYSQL_PORT}/{Config.DBNAME}'
