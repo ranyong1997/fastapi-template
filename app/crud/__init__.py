@@ -7,8 +7,12 @@
 # @Software: PyCharm
 # @desc    :
 from ..models import async_engine, Base
+from ..utils import Log
 
 
+class Mapper(object):
+    __log__ = Log("fastapiBase")
+    __module__ =
 # 异步创建连接
 async def create_table():
     async with async_engine.begin() as conn:

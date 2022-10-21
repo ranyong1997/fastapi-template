@@ -6,7 +6,6 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 # @desc    : orm操作
-from ..config import Settings
 from ..config.config import config
 from ..enums.DatabaseEnum import DatabaseEnum
 from .user import UserInDB
