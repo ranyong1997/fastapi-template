@@ -333,6 +333,5 @@ dmypy.json
 cython_debug/
 
 /logs
-
-/conf/dev.env
-/conf/pro.env
+conf/pro.env
+conf/dev.env
