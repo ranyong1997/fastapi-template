@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     # jwt 加密算法
     jwt_algorithm: str = "HS256"
     # token过期时间，单位：秒
-    jwt_exp_seconds: int = 60 * 60
+    jwt_exp_seconds: int = 7 * 24 * 60 * 60
     # 项目标题
     project_title = "FastAPI 后端模板"
     # 项目描述
@@ -105,13 +105,13 @@ class Settings(BaseSettings):
     """
 
 
-class Dev_Config(Settings):
+class DevConfig(Settings):
     # 开发者模式
     class Config:
         env_file = os.path.join(base_dir, "conf", "dev.env")
 
 
-class Pro_Config(Settings):
+class ProConfig(Settings):
     # 正式环境
     class Config:
         env_file = os.path.join(base_dir, "conf", "pro.env")
@@ -121,9 +121,9 @@ class Pro_Config(Settings):
 FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
 
 # 如果fastapi_env存在且为pro
-Config = Pro_Config() if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else Dev_Config()
+config = ProConfig() if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else DevConfig()
 # 初始化 sqlalchemy（由 apscheduler 使用）
-Config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{Config.MYSQL_USER}:{Config.MYSQL_PWD}@{Config.MYSQL_HOST}:{Config.MYSQL_PORT}/{Config.DBNAME}'
+config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{config.MYSQL_USER}:{config.MYSQL_PWD}@{config.MYSQL_HOST}:{config.MYSQL_PORT}/{config.DBNAME}'
 # 初始化sqlalchemy
-Config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{Config.MYSQL_USER}:{Config.MYSQL_PWD}' \
-                              f'@{Config.MYSQL_HOST}:{Config.MYSQL_PORT}/{Config.DBNAME}'
+config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{config.MYSQL_USER}:{config.MYSQL_PWD}' \
+                              f'@{config.MYSQL_HOST}:{config.MYSQL_PORT}/{config.DBNAME}'

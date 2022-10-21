@@ -6,3 +6,9 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 # @desc    :
+from ..models import async_engine, Base
+
+
+async def create_table():
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)

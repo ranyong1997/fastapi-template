@@ -14,6 +14,7 @@ from .routers import custom_docs, api_router
 from .config import settings
 from .views import views_router
 from . import init_logging
+from .crud import create_table
 
 # 实例化fastapi对象
 app = FastAPI(docs_url=None,
@@ -42,6 +43,7 @@ logger.bind(name=None).opt(ansi=True).success(
     f"fastapi 正在运行环境: <blue>{FASTAPI_ENV} 网址: http://localhost:8000/docs</blue>")
 logger.bind(name=None).success(settings.BANNER)
 
+
 @app.on_event("startup")
 async def init_database():
     """
@@ -49,8 +51,7 @@ async def init_database():
     :return:
     """
     try:
-        asyncio.create_task()
-
+        asyncio.create_task(create_table())
         logger.bind(name=None).success("数据库和表创建成功.          ✔")
     except Exception as e:
         logger.bind(name=None).error(f"数据库和表创建失败.          ❌ \n Error:{str(e)}")
