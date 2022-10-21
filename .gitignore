@@ -335,3 +335,4 @@ cython_debug/
 /logs
 conf/pro.env
 conf/dev.env
+*.env
