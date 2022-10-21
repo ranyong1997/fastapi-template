@@ -9,6 +9,7 @@
 from ..models import async_engine, Base
 
 
+# 异步创建连接
 async def create_table():
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

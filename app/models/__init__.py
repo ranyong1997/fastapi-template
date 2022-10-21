@@ -19,7 +19,6 @@ from sqlalchemy.ext.declarative import declarative_base  # 建立基本映射类
 def create_database():
     engine = create_engine('mysql+mysqlconnector://{}:{}@{}:{}'.format(
         config.MYSQL_USER, config.MYSQL_PWD, config.MYSQL_HOST, config.MYSQL_PORT), echo=True)
-    print(engine)
     with engine.connect() as conn:
         conn.execute(
             "CREATE DATABASE IF NOT EXISTS fastapi default character set utf8mb4 collate utf8mb4_unicode_ci")

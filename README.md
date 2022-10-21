@@ -125,8 +125,18 @@ python main.py
 - [X] 基础接口调试
 - [X] 开发接口调试/隐藏
 - [X] 使用loguru日志模块
+- [X] 使用SQLAlchemy数据库
 
 待实现功能:
-- [ ] 使用SQLAlchemy数据库
+- [ ] 连接redis
+
 ## 截图
 ![image-20221013164104847](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202210131641293.png)
+
+![image-20221021151347654](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202210211513751.png)
+
+## 开发注意事项
+```shell
+移除配置文件,脱敏
+git rm -r --cached conf/
+```
