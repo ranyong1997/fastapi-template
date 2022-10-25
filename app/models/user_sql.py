@@ -8,10 +8,10 @@
 # @desc    : 用户建库
 from datetime import datetime
 from sqlalchemy import Column, INT, TIMESTAMP, String
-from ..config import Settings
+from app.models import Base
 
 
-class User(Settings):
+class User(Base):
     __tablename__ = 'users'  # 表名
     id = Column(INT, primary_key=True)  # 设置主键
     username = Column(String(16), unique=True, index=True)  # unique=True 记录值都要唯一，不允许重复

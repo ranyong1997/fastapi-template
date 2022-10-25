@@ -9,7 +9,7 @@
 from pydantic import BaseModel, validator, Field
 
 
-class UserSignUp(BaseModel):
+class UserSignUp(BaseModel):  # 定义用户注册模型基类
     username: str = Field(..., example='tom')
     password: str = Field(..., example='123')
     password2: str = Field(..., example='123')
@@ -21,12 +21,12 @@ class UserSignUp(BaseModel):
         return value
 
 
-class UserLogin(BaseModel):
+class UserLogin(BaseModel):  # 用户登录模型基类
     username: str = Field(..., example='tom')
     password: str = Field(..., example='123')
 
 
-class UserInfo(BaseModel):
+class UserInfo(BaseModel):  # 用户信息模型基类
     username: str
     is_superuser: bool = False
     status: bool = True

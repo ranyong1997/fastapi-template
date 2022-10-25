@@ -16,14 +16,6 @@ base_dir = Path(__file__).absolute().parent.parent.parent
 
 
 class Settings(BaseSettings):
-    # class Dev_Config():
-    #     # 开发者模式
-    #     env_file = os.path.join(base_dir, "conf", "dev.env")
-    #
-    # class Pro_Config():
-    #     # 正式环境
-    #     env_file = os.path.join(base_dir, "conf", "pro.env")
-
     # debug模式
     debug: bool = True
     # 数据库—server
@@ -87,15 +79,7 @@ class Settings(BaseSettings):
     session_secret_key = "sadehewagbwft34ba"
     session_cookie = "session_id"
     session_max_age = 14 * 24 * 60 * 60
-    # # 获取sakura环境变量
-    # FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
-    # # 如果fastapi_env存在且为pro
-    # Config = Pro_Config if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else Dev_Config
-    # # 初始化 sqlalchemy（由 apscheduler 使用）
-    # Config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{MYSQL_USER}:{MYSQL_PWD}@{MYSQL_HOST}:{MYSQL_PORT}/{DBNAME}'
-    # # 初始化sqlalchemy
-    # Config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{MYSQL_USER}:{MYSQL_PWD}' \
-    #                               f'@{MYSQL_HOST}:{MYSQL_PORT}/{DBNAME}'
+    TABLE_TAG = "__tag__"
     BANNER = """
       ____|             |                 _)      __ __|                        |         |         
       |     _` |   __|  __|   _` |  __ \   |         |   _ \  __ `__ \   __ \   |   _` |  __|   _ \ 

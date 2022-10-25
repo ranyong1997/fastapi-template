@@ -13,11 +13,13 @@ from typing import Optional
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
-from ..config import settings
-from ..libs.db_lib import db
-from ..utils import log
+from app.config import settings
+from app.libs.db_lib import db
+from app.utils import log
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=settings.swagger_ui_oauth2_redirect_url)
+# 获取token地址
+tokenUrl = settings.swagger_ui_oauth2_redirect_url
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

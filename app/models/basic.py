@@ -36,7 +36,7 @@ class FastapiBase(Base):
         self.update_user = user
         self.deleted_at = user
 
-    def serialize(self,*ignore):
+    def serialize(self, *ignore):
         """
         :param ignore:
         :return:
@@ -45,6 +45,15 @@ class FastapiBase(Base):
         for c in self.__table__.columns:
             if c.name in ignore:
                 continue
-            val = getattr(self,c.name)
-            if isinstance(val,datetime):
+            val = getattr(self, c.name)
+            if isinstance(val, datetime):
                 data[c.name] = val.strftime("%Y-%m-%d %H:%M:%S")
+            elif isinstance(val, Decimal):
+                data[c.name] = str(val)
+            elif isinstance(val, bytes):
+                data[c.name] = val.decode(encoding='utf-8')
+            else:
+                data[c.name] = val
+        return json.dumps(data, ensure_ascii=False)
+
+

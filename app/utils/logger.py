@@ -9,7 +9,7 @@
 import inspect
 import os
 from loguru import logger
-from ..config import settings
+from app.config import settings
 
 
 class Log(object):
