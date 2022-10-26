@@ -5,7 +5,7 @@
 # @Site    : 
 # @File    : auth.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : token获取
 import traceback
 import jwt
 from datetime import timedelta, datetime, timezone
