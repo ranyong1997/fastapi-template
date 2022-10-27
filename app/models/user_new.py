@@ -3,9 +3,9 @@
 # @Time    : 2022/10/26 15:53
 # @Author  : 冉勇
 # @Site    : 
-# @File    : models.py
+# @File    : user_new.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 用户建表
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from ..models import Base

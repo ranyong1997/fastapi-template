@@ -3,12 +3,13 @@
 # @Time    : 2022/10/26 16:03
 # @Author  : 冉勇
 # @Site    : 
-# @File    : crud.py
+# @File    : user_crud.py
 # @Software: PyCharm
 # @desc    : user_new【curd】
 from sqlalchemy.orm import Session
-from app.models import models as models
-from app.schemas import schemas as schemas
+from app.models import user_new as models
+from app.schemas import user_new as schemas
+from app.utils.hash_lib import Hash
 
 
 def get_user(db: Session, user_id: int):
@@ -49,8 +50,9 @@ def create_user(db: Session, user: schemas.UserCreate):
     :param user: 用户模型
     :return: 根据email和password登录的用户信息
     """
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    fake_hashed_password = user.password
+    hash_password = Hash.encrypt_password(fake_hashed_password)
+    db_user = models.User(email=user.email, hashed_password=hash_password)
     db.add(db_user)  # 添加到会话
     db.commit()  # 提交到数据库
     db.refresh(db_user)  # 刷新数据库
@@ -81,3 +83,17 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def delete_user_item(db: Session,  email_id: int):
+    """
+    删除用户item
+    :param db:
+    :param item:
+    :param email_id:
+    :return:
+    """
+    # 根据email获取用户id进行删除
+    db_user = db.query(models.User).filter(models.User.email == email_id).first()
+    print(db_user)
+

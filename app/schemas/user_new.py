@@ -3,9 +3,9 @@
 # @Time    : 2022/10/26 16:03
 # @Author  : 冉勇
 # @Site    : 
-# @File    : schemas.py
+# @File    : user_new.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 用户模型模式
 from typing import List
 from pydantic import BaseModel
 
