@@ -5,7 +5,7 @@
 # @Site    : 
 # @File    : config.py
 # @Software: PyCharm
-# @desc    : 配置文件
+# @desc    : 全局配置文件
 import os
 from pathlib import Path
 from typing import List
@@ -106,7 +106,7 @@ FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
 
 # 如果fastapi_env存在且为pro
 config = ProConfig() if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else DevConfig()
-# 初始化 sqlalchemy（由 apscheduler 使用）
+# 初始化 sqlalchemy（由创建数据引擎）
 config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{config.MYSQL_USER}:{config.MYSQL_PWD}@{config.MYSQL_HOST}:{config.MYSQL_PORT}/{config.DBNAME}'
 # 初始化sqlalchemy
 config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{config.MYSQL_USER}:{config.MYSQL_PWD}' \

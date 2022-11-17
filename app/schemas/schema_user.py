@@ -3,9 +3,9 @@
 # @Time    : 2022/10/12 15:22
 # @Author  : 冉勇
 # @Site    : 
-# @File    : user.py
+# @File    : db_user.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 用户相关的数据模型
 from pydantic import BaseModel, validator, Field
 
 

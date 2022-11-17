@@ -5,13 +5,13 @@
 # @Site    : 
 # @File    : auth.py
 # @Software: PyCharm
-# @desc    : token获取
+# @desc    : 登录认证相关依赖
 import traceback
 import jwt
 from datetime import timedelta, datetime, timezone
 from typing import Optional
 from fastapi import HTTPException, Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer  # 导入安全模块类
 from jose import JWTError
 from app.config import settings
 from app.libs.db_lib import db
@@ -19,9 +19,11 @@ from app.utils import log
 
 # 获取token地址
 tokenUrl = settings.swagger_ui_oauth2_redirect_url
+# 创建依赖类实例
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl)
 
 
+# 创建访问令牌
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()
     if expires_delta:
@@ -32,8 +34,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return jwt.encode(to_encode, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
 
 
+# 解析token 中的payload 信息
 def auth_depend(token: str = Depends(oauth2_scheme)):
-    # 第二步 解析token 中的payload 信息
     try:
         payload = jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm])
     except JWTError:

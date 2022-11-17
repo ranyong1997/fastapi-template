@@ -62,10 +62,7 @@ async def global_execution_handler(request: Request, exc: Exception):
     :param exc:
     :return:
     """
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content=dict(code=110, msg="未知错误:" + str(exc))
-    )
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=dict(code=110, msg=f"未知错误:{str(exc)}"))
 
 
 def format_record(record: dict) -> str:

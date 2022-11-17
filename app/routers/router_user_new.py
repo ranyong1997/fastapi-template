@@ -3,16 +3,16 @@
 # @Time    : 2022/10/26 16:07
 # @Author  : 冉勇
 # @Site    : 
-# @File    : user_new.py
+# @File    : db_user_new.py
 # @Software: PyCharm
-# @desc    : 用户路由相关
+# @desc    : 与用户路由相关
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 from app.config.database import SessionLocal, engine
 from app.crud import user_crud as crud
-from app.models import user_new as models
-from app.schemas import user_new as schemas
+from app.models import db_user_new as models
+from app.schemas import schema_user_new as schemas
 
 models.Base.metadata.create_all(bind=engine)
 router = APIRouter(prefix="/user_new", tags=['用户接口_new'])

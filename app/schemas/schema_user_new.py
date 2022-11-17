@@ -3,9 +3,9 @@
 # @Time    : 2022/10/26 16:03
 # @Author  : 冉勇
 # @Site    : 
-# @File    : user_new.py
+# @File    : db_user_new.py
 # @Software: PyCharm
-# @desc    : 用户模型模式
+# @desc    : 用户相关的数据模型
 from typing import List
 from pydantic import BaseModel
 

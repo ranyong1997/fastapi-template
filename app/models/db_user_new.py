@@ -3,7 +3,7 @@
 # @Time    : 2022/10/26 15:53
 # @Author  : 冉勇
 # @Site    : 
-# @File    : user_new.py
+# @File    : db_user_new.py
 # @Software: PyCharm
 # @desc    : 用户建表
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
@@ -18,7 +18,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True)
     hashed_password = Column(String(255))
     is_active = Column(Boolean, default=True)
-    items = relationship("Item", back_populates="owner")
+    items = relationship("Item", back_populates="owner")  # 定义一对多关系
     # 关联 Item 表
 
 
@@ -29,5 +29,5 @@ class Item(Base):
     title = Column(String(255), index=True)
     description = Column(String(255), index=True)
     owner_id = Column(Integer, ForeignKey('users.id'))
-    owner = relationship("User", back_populates="items")
+    owner = relationship("User", back_populates="items")  # 定义关联
     # 关联 User 表

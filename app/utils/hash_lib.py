@@ -5,7 +5,7 @@
 # @Site    : 
 # @File    : hash_lib.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 加密相关工具
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
 
 

@@ -5,7 +5,7 @@
 # @Site    : 
 # @File    : database.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 公共依赖
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -16,11 +16,10 @@ engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 with engine.connect() as conn:
     conn.execute(
         "CREATE DATABASE IF NOT EXISTS fastapi default character set utf8mb4 collate utf8mb4_unicode_ci")
-# 关闭引擎
 engine.dispose()
 
-# 创建数据库会话
+# 创建本地会话
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# 声明基类
+# 创建数据模型基础类
 Base = declarative_base()

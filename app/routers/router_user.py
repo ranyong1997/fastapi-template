@@ -3,15 +3,15 @@
 # @Time    : 2022/10/12 15:40
 # @Author  : 冉勇
 # @Site    : 
-# @File    : user.py
+# @File    : db_user.py
 # @Software: PyCharm
-# @desc    :
+# @desc    : 与用户相关路由
 from fastapi import APIRouter, Body, Depends
 from app.dependencies import auth_depend
 from app.libs.db_lib import db
 from app.utils import hash_tool
-from app.models.user import UserInDB
-from app.schemas.user import UserSignUp, UserInfo
+from app.models.db_user import UserInDB
+from app.schemas.schema_user import UserSignUp, UserInfo
 from app.utils import log
 
 router = APIRouter(prefix="/user", tags=['用户接口'])

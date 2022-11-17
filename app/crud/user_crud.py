@@ -7,8 +7,8 @@
 # @Software: PyCharm
 # @desc    : user_new【curd】
 from sqlalchemy.orm import Session
-from app.models import user_new as models
-from app.schemas import user_new as schemas
+from app.models import db_user_new as models
+from app.schemas import schema_user_new as schemas
 from app.utils.hash_lib import Hash
 
 

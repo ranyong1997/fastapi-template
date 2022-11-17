@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import List
 from pydantic import parse_file_as
-from app.models.user import UserInDB
+from app.models.db_user import UserInDB
 
 
 class FakeDB:

@@ -3,7 +3,7 @@
 # @Time    : 2022/10/12 15:24
 # @Author  : 冉勇
 # @Site    : 
-# @File    : docs.py
+# @File    : router_docs.py
 # @Software: PyCharm
 # @desc    : 处理docs缓慢问题(仅用于调试，项目上线会隐藏docs)
 from fastapi import APIRouter, FastAPI, Depends
@@ -14,20 +14,17 @@ from ..dependencies import create_access_token
 from ..libs.db_lib import db
 from ..utils import hash_tool
 from ..utils import log
+
 router = APIRouter()
 
 
 def custom_docs(application: FastAPI):
     async def custom_swagger_ui_html():
-        return get_swagger_ui_html(
-            openapi_url=application.openapi_url,
-            title=application.title + " - Swagger UI",
-            oauth2_redirect_url=application.swagger_ui_oauth2_redirect_url)
+        return get_swagger_ui_html(openapi_url=application.openapi_url, title=f"{application.title} - Swagger UI",
+                                   oauth2_redirect_url=application.swagger_ui_oauth2_redirect_url)
 
     async def redoc_html():
-        return get_redoc_html(
-            openapi_url=application.openapi_url,
-            title=application.title + " - ReDoc")
+        return get_redoc_html(openapi_url=application.openapi_url, title=f"{application.title} - ReDoc")
 
     def get_token(form_data: OAuth2PasswordRequestForm = Depends()):
         # 第一步 拿到用户名和密码，校验

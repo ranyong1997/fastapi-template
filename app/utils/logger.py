@@ -5,7 +5,7 @@
 # @Site    :
 # @File    : logger.py
 # @Software: PyCharm
-# @desc    : 日志
+# @desc    : 日志相关工具
 import inspect
 import os
 from loguru import logger
