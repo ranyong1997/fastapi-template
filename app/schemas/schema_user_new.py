@@ -7,7 +7,7 @@
 # @Software: PyCharm
 # @desc    : 用户相关的数据模型
 # 导入相关模块
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, validator
 from typing import Optional
 
 
@@ -34,9 +34,15 @@ class Item(ItemBase):
 
 # 定义UserBase模型类，从BaseModel继承
 class UserBase(BaseModel):
-    email: str = Field(..., example='admin@example.com')
-    name: str = Field(..., example='管理员')
-    password: str = Field(..., example='123456')
+    email: str
+    name: str
+    password: str
+
+    @validator('email', 'name', 'password')
+    def field_not_empty(cls, v):
+        if isinstance(v, str) and len(v.strip()) == 0:
+            raise {'不能为空'}
+        return v
 
 
 class UserCreate(UserBase):
@@ -47,7 +53,6 @@ class User(UserBase):
     id: str
     email: str
     name: str
-    password: str
     is_superuser: bool = False
     status: bool = True
 
