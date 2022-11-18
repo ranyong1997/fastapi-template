@@ -12,6 +12,7 @@ from app.schemas import schema_user_new as schemas
 from app.utils.hash_lib import Hash
 
 
+# 通过id获取单个用户
 def get_user(db: Session, user_id: int):
     """
     根据id获取用户信息
@@ -22,6 +23,7 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
+# 通过email读取单个用户
 def get_user_by_email(db: Session, email: str):
     """
     根据email获取用户信息
@@ -32,6 +34,7 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
+# 获取前100个用户
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     """
     获取特定数量的用户
@@ -43,6 +46,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
+# 创建用户
 def create_user(db: Session, user: schemas.UserCreate):
     """
     创建用户
@@ -50,15 +54,17 @@ def create_user(db: Session, user: schemas.UserCreate):
     :param user: 用户模型
     :return: 根据email和password登录的用户信息
     """
-    fake_hashed_password = user.password
-    hash_password = Hash.encrypt_password(fake_hashed_password)
-    db_user = models.User(email=user.email, hashed_password=hash_password)
-    db.add(db_user)  # 添加到会话
+    hash_password = Hash.encrypt_password(user.password)  # 哈希加密密码
+    db_users = models.User(email=user.email, name=user.name,
+                           password=hash_password)
+    db.add(db_users)  # 添加到会话
+    db.flush()
     db.commit()  # 提交到数据库
-    db.refresh(db_user)  # 刷新数据库
-    return db_user
+    db.refresh(db_users)  # 刷新数据库
+    return db_users
 
 
+# 获取前100个item中的数据
 def get_items(db: Session, skip: int = 0, limit: int = 100):
     """
     获取指定数量的item
@@ -70,6 +76,7 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
 
 
+# 创建用户item
 def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     """
     创建用户item
@@ -85,7 +92,8 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     return db_item
 
 
-def delete_user_item(db: Session,  email_id: int):
+# 删除用户item，根据email删除
+def delete_user_item(db: Session, email_id: int):
     """
     删除用户item
     :param db:
@@ -96,4 +104,3 @@ def delete_user_item(db: Session,  email_id: int):
     # 根据email获取用户id进行删除
     db_user = db.query(models.User).filter(models.User.email == email_id).first()
     print(db_user)
-

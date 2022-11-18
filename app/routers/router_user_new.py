@@ -8,37 +8,37 @@
 # @desc    : 与用户路由相关
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session  # 导入会话组件
 from app.config.database import SessionLocal, engine
 from app.crud import user_crud as crud
-from app.models import db_user_new as models
-from app.schemas import schema_user_new as schemas
+from app.models import db_user_new as models  # 导入前面定义的models模块
+from app.schemas import schema_user_new as schemas  # 导入前面定义的models模块
 
+# 生成数据库中的表
 models.Base.metadata.create_all(bind=engine)
 router = APIRouter(prefix="/user_new", tags=['用户接口_new'])
 
 
-# 依赖
+# 定义依赖函数
 def get_db():
+    db = SessionLocal()
     try:
-        db = SessionLocal()
         yield db
     finally:
         db.close()
 
 
-@router.post("/users/", response_model=schemas.User, summary="创建用户")
+# 定义路径操作函数，并注册路由路径：用户
+@router.post("/creat/", response_model=schemas.User, summary="创建用户")
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # 根据email查找用户
-    db_user = crud.get_user_by_email(db, email=user.email)
-    # 如果用户存在，提示该邮箱已经被注册
-    if db_user:
+    # 根据email查找用户，如果用户存在，提示该邮箱已经被注册
+    if crud.get_user_by_email(db, email=user.email):
         raise HTTPException(status_code=400, detail="电子邮件已注册")
     # 返回创建的user对象
     return crud.create_user(db=db, user=user)
 
 
-@router.get("/users/", response_model=List[schemas.User], summary="获取用户数量")
+@router.get("/items/", response_model=List[schemas.User], summary="获取用户数量")
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_users(db, skip=skip, limit=limit)
 
@@ -53,7 +53,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.post("/users/{user_id}/items/", response_model=schemas.Item, summary="创建用户item")
+@router.post("/users/{user_id}/items/", response_model=schemas.Item, summary="根据用户id创建item")
 def create_item_for_user(user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)):
     # 创建该用户的items
     return crud.create_user_item(db=db, item=item, user_id=user_id)
@@ -64,7 +64,7 @@ def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_items(db, skip=skip, limit=limit)
 
 
-@router.delete("/users/{user_id}", response_model=schemas.Item, summary="删除用户")
+@router.delete("/users/{user_id}", response_model=schemas.Item, summary="根据用户id删除用户")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     # 获取当前id的用户信息
     db_user = crud.get_user(db, user_id=user_id)

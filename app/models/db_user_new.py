@@ -16,7 +16,8 @@ class User(Base):
     __tablename__ = 'users'  # 定义表名
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True)
-    hashed_password = Column(String(255))
+    name = Column(String(255))
+    password = Column(String(255))
     is_active = Column(Boolean, default=True)
     items = relationship("Item", back_populates="owner")  # 定义一对多关系
     # 关联 Item 表

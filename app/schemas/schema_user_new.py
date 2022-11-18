@@ -6,39 +6,50 @@
 # @File    : db_user_new.py
 # @Software: PyCharm
 # @desc    : 用户相关的数据模型
-from typing import List
-from pydantic import BaseModel
+# 导入相关模块
+from pydantic import BaseModel, Field, validator
+from typing import Optional
 
 
+# 定义ItemBase模型类，从BaseModel继承
 class ItemBase(BaseModel):
+    # 定义模型的属性
     title: str
-    description: str = None
+    description: Optional[str] = None
 
 
+# 定义ItemCreate模型类，从ItemBase继承
 class ItemCreate(ItemBase):
     pass
 
 
+# 定义Item模型类，从ItemBase继承
 class Item(ItemBase):
     id: int
     owner_id: int
 
-    class Config:
+    class Config:  # 配置项中启用ORM模式
         orm_mode = True
 
 
+# 定义UserBase模型类，从BaseModel继承
 class UserBase(BaseModel):
-    email: str
+    email: str = Field(..., example='admin@example.com')
+    name: str = Field(..., example='管理员')
+    password: str = Field(..., example='123456')
 
 
 class UserCreate(UserBase):
-    password: str
+    pass
 
 
 class User(UserBase):
-    id: int
-    is_active: bool
-    items: List[Item] = []
+    id: str
+    email: str
+    name: str
+    password: str
+    is_superuser: bool = False
+    status: bool = True
 
-    class Config:
+    class Config:  # 配置项中启用ORM模式
         orm_mode = True
