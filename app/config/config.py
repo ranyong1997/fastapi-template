@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     # url的前缀
     url_prefix: str = "/api/v1"
     # host
-    server_host: str = "localhost"
+    server_host: str = "192.168.1.243"
     server_port: int = 8000
     # 是否启用/test接口
     enable_test_router: bool = True

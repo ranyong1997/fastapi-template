@@ -102,3 +102,30 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
     :return: item列表
     """
     return db.query(models.Item).offset(skip).limit(limit).all()
+
+
+# 根据user_id返回item数据
+def get_item_by_user_id(user_id: int, db: Session, item: schemas.Item):
+    """
+    根据user_id获取item.id的数据
+    :param user_id:
+    :param db:
+    :param item:
+    :return:
+    """
+    pass
+
+
+# 根据user_id批量更新item
+def update_items(db: Session, item: schemas.Item, user_id: int):
+    """
+    根据user_id批量更新items
+    :param db:
+    :param item:
+    :param user_id:
+    :return:
+    """
+    db.query(models.Item).filter(models.Item.owner_id == user_id).update(
+        {'title': item.title, 'description': item.description})
+    db.commit()
+    return {'message': '更新成功'}

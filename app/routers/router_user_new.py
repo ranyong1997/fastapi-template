@@ -29,7 +29,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
-@router.get("/items/", response_model=List[schemas.User], summary="获取用户数量")
+@router.get("/users/list/", response_model=List[schemas.User], summary="获取用户列表")
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_users(db, skip=skip, limit=limit)
 
@@ -61,6 +61,11 @@ def create_item_for_user(user_id: int, item: schemas.ItemCreate, db: Session = D
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 
-@router.get("/items/", response_model=List[schemas.Item], summary="查询用户item")
+@router.get("/items/list/", response_model=List[schemas.Item], summary="获取用户item列表")
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_items(db, skip=skip, limit=limit)
+    return crud.get_items(db=db, skip=skip, limit=limit)
+
+
+@router.put("/items/{user_id}/update/", summary="根据用户id更新item数据")
+def update_items(user_id: int, item: schemas.Item, db: Session = Depends(get_db)):
+    return crud.update_items(db=db, item=item, user_id=user_id)

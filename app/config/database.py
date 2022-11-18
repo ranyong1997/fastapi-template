@@ -21,9 +21,6 @@ engine.dispose()
 # 创建本地会话
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# 创建数据模型基础类
-Base = declarative_base()
-
 
 # 定义依赖函数
 def get_db():
@@ -33,3 +30,6 @@ def get_db():
     finally:
         db.close()
 
+
+# 创建数据模型基础类
+Base = declarative_base()

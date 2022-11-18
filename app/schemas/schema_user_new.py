@@ -25,8 +25,7 @@ class ItemCreate(ItemBase):
 
 # 定义Item模型类，从ItemBase继承
 class Item(ItemBase):
-    id: int
-    owner_id: int
+    pass
 
     class Config:  # 配置项中启用ORM模式
         orm_mode = True
