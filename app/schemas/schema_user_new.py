@@ -25,7 +25,26 @@ class ItemCreate(ItemBase):
 
 # 定义Item模型类，从ItemBase继承
 class Item(ItemBase):
-    pass
+    title: str
+    description: str
+
+    class Config:  # 配置项中启用ORM模式
+        orm_mode = True
+
+
+# 定义Item模型类，从ItemBase继承
+class Item_Config(BaseModel):
+    id: str
+    title: str
+    description: str
+
+    class Config:  # 配置项中启用ORM模式
+        orm_mode = True
+
+
+# 定义Item模型类，从ItemBase继承
+class Item_Delete(BaseModel):
+    id: str
 
     class Config:  # 配置项中启用ORM模式
         orm_mode = True
@@ -52,7 +71,6 @@ class User(UserBase):
     id: str
     email: str
     name: str
-    is_superuser: bool = False
     status: bool = True
 
     class Config:  # 配置项中启用ORM模式

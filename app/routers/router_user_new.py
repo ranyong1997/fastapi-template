@@ -61,11 +61,29 @@ def create_item_for_user(user_id: int, item: schemas.ItemCreate, db: Session = D
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 
-@router.get("/items/list/", response_model=List[schemas.Item], summary="获取用户item列表")
+@router.get("/items/list/", response_model=List[schemas.Item_Config], summary="获取item列表")
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_items(db=db, skip=skip, limit=limit)
 
 
-@router.put("/items/{user_id}/update/", summary="根据用户id更新item数据")
+@router.put("/items/{user_id}/update/", summary="根据user_id批量更新item数据")
 def update_items(user_id: int, item: schemas.Item, db: Session = Depends(get_db)):
     return crud.update_items(db=db, item=item, user_id=user_id)
+
+
+@router.get("/items/{user_id}/info", response_model=List[schemas.Item], summary="根据user_id返回一条title数据")
+def get_items(user_id: int, db: Session = Depends(get_db)):
+    if db_items := crud.get_item_by_user_id(db=db, user_id=user_id):
+        return db_items
+    else:
+        raise HTTPException(status_code=404, detail="未找到该用户相关信息")
+
+
+@router.put("/items/update/", summary="根据id更新item数据")
+def update_items(item: schemas.Item_Config, db: Session = Depends(get_db)):
+    return crud.update_item_by_item_id(db=db, item=item)
+
+
+@router.delete("/items/delete/", summary="根据id删除item数据")
+def delete_items(item: schemas.Item_Delete, db: Session = Depends(get_db)):
+    return crud.delete_item_by_item_id(db=db, item=item)

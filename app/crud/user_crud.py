@@ -74,6 +74,7 @@ def delete_user(db: Session, user_id: int):
     """
     db.query(models.User).filter(models.User.id == user_id).delete()
     db.commit()
+    return {'message': '删除成功'}
 
 
 # 创建用户item
@@ -105,7 +106,7 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
 
 
 # 根据user_id返回item数据
-def get_item_by_user_id(user_id: int, db: Session, item: schemas.Item):
+def get_item_by_user_id(db: Session, user_id: int):
     """
     根据user_id获取item.id的数据
     :param user_id:
@@ -113,19 +114,47 @@ def get_item_by_user_id(user_id: int, db: Session, item: schemas.Item):
     :param item:
     :return:
     """
-    pass
+    return db.query(models.Item).filter(models.Item.owner_id == user_id).all()
 
 
 # 根据user_id批量更新item
 def update_items(db: Session, item: schemas.Item, user_id: int):
     """
     根据user_id批量更新items
+    :param user_id:
     :param db:
     :param item:
-    :param user_id:
     :return:
     """
     db.query(models.Item).filter(models.Item.owner_id == user_id).update(
         {'title': item.title, 'description': item.description})
     db.commit()
     return {'message': '更新成功'}
+
+
+# 根据items_id修改title和description
+def update_item_by_item_id(db: Session, item: schemas.Item_Config):
+    """
+    根据items_id修改title和description
+    :param item:
+    :param db:
+    :param id:
+    :return:
+    """
+    db.query(models.Item).filter(models.Item.id == item.id).update(
+        {'title': item.title, 'description': item.description})
+    db.commit()
+    return {'message': '修改成功'}
+
+
+# 根据items_id删除数据
+def delete_item_by_item_id(db: Session, item: schemas.Item_Delete):
+    """
+    根据items_id删除数据
+    :param db:
+    :param item:
+    :return:
+    """
+    db.query(models.Item).filter(models.Item.id == item.id).delete()
+    db.commit()
+    return {'message': '删除成功'}
