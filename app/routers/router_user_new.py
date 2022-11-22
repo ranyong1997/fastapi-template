@@ -6,15 +6,23 @@
 # @File    : db_user_new.py
 # @Software: PyCharm
 # @desc    : 与用户路由相关
+import traceback
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.orm import Session  # 导入会话组件
 from app.config.database import engine, get_db
 from app.crud import user_crud as crud
+from app.dependencies import create_access_token, auth_depend
 from app.models import db_user_new as models  # 导入前面定义的models模块
+from app.models.db_user_new import User
 from app.schemas import schema_user_new as schemas  # 导入前面定义的models模块
+from app.schemas.schema_user_new import UserInfo
+from app.utils.fatcory import TemplateResponse
+from app.utils.logger import Log
 
 # 生成数据库中的表
+
+
 models.Base.metadata.create_all(bind=engine)
 router = APIRouter(prefix="/user_new", tags=['用户接口_new'])
 
@@ -87,3 +95,14 @@ def update_items(item: schemas.Item_Config, db: Session = Depends(get_db)):
 @router.delete("/items/delete/", summary="根据id删除item数据")
 def delete_items(item: schemas.Item_Delete, db: Session = Depends(get_db)):
     return crud.delete_item_by_item_id(db=db, item=item)
+
+
+@router.post('/login', summary="登录")
+async def login(item: schemas.UserForm, db: Session = Depends(get_db)):
+    try:
+        user = crud.login(item.email, item.password, db=db)
+        user = TemplateResponse.model_to_dict(user, "password")  # 排除显示密码
+        token = create_access_token({"username": item.email})
+        return {"user": user, "access_token": token, "token_type": "bearer"}
+    except Exception as e:
+        raise e

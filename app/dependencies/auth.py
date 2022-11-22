@@ -6,6 +6,7 @@
 # @File    : auth.py
 # @Software: PyCharm
 # @desc    : 登录认证相关依赖
+import hashlib
 import traceback
 import jwt
 from datetime import timedelta, datetime, timezone
@@ -15,7 +16,7 @@ from fastapi.security import OAuth2PasswordBearer  # 导入安全模块类
 from jose import JWTError
 from app.config import settings
 from app.libs.db_lib import db
-from app.utils import log
+from app.utils import log, Hash
 
 # 获取token地址
 tokenUrl = settings.swagger_ui_oauth2_redirect_url
@@ -50,3 +51,8 @@ def auth_depend(token: str = Depends(oauth2_scheme)):
     username = payload.get('username')
     user = db.get_or_none(username)
     return {"msg": "认证不通过"} if user is None else user
+
+
+# 密码进行加密
+def add_salt(password: str):
+    return Hash.encrypt_password(password)

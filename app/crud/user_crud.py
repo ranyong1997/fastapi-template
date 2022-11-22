@@ -7,9 +7,12 @@
 # @Software: PyCharm
 # @desc    : user_new【curd】
 from sqlalchemy.orm import Session
+
+from app.dependencies.auth import add_salt
 from app.models import db_user_new as models
 from app.schemas import schema_user_new as schemas
 from app.utils.hash_lib import Hash
+from app.utils.logger import Log
 
 
 # 创建用户
@@ -158,3 +161,33 @@ def delete_item_by_item_id(db: Session, item: schemas.Item_Delete):
     db.query(models.Item).filter(models.Item.id == item.id).delete()
     db.commit()
     return {'message': '删除成功'}
+
+
+# 登录
+def login(email, password, db: Session):
+    """
+    登录
+    :param password:
+    :param email:
+    :param db:
+    :param item:
+    :return:
+    """
+    try:
+        hash_password = Hash.encrypt_password(password)  # 哈希加密密码
+        user = db.query(models.User).filter(models.User.email == email, models.User.password == password).first()
+        if user is None:
+            raise Exception('用户名或密码错误')
+        return user
+    except Exception as e:
+        raise e
+
+
+# 获取登录信息
+def login_info(email, password, db: Session):
+    """
+    获取登录信息
+    :param db:
+    :return:
+    """
+    pass

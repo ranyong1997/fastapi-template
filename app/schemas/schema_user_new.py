@@ -75,3 +75,25 @@ class User(UserBase):
 
     class Config:  # 配置项中启用ORM模式
         orm_mode = True
+
+
+class UserForm(BaseModel):
+    email: str
+    password: str
+
+    @validator('email', 'password')
+    def name_not_empty(cls, v):
+        if isinstance(v, str) and len(v.strip()) == 0:
+            raise {'不能为空'}
+        return v
+
+
+class UserInfo(UserForm):
+    id: int
+    email: str
+    name: str
+    status: bool = True
+
+    class Config:  # 配置项中启用ORM模式
+        orm_mode = True
+
