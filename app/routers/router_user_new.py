@@ -106,3 +106,4 @@ async def login(item: schemas.UserForm, db: Session = Depends(get_db)):
         return {"user": user, "access_token": token, "token_type": "bearer"}
     except Exception as e:
         raise e
+        # return TemplateResponse.failed(e)

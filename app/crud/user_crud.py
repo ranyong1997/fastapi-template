@@ -170,7 +170,6 @@ def login(email, password, db: Session):
     :param password:
     :param email:
     :param db:
-    :param item:
     :return:
     """
     try:
@@ -178,6 +177,8 @@ def login(email, password, db: Session):
         user = db.query(models.User).filter(models.User.email == email, models.User.password == hash_password).first()
         if user is None:
             raise Exception('用户名或密码错误')
+        if not user.is_active:
+            raise Exception("您的账号已被封禁, 请联系管理员")
         return user
     except Exception as e:
         raise e

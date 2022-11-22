@@ -18,7 +18,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True)
     name = Column(String(255))
     password = Column(String(255))
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True)   # 是否被冻结，默认未冻结
     items = relationship("Item", back_populates="owner")  # 定义一对多关系
     # 关联 Item 表
 
