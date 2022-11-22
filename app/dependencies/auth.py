@@ -55,4 +55,8 @@ def auth_depend(token: str = Depends(oauth2_scheme)):
 
 # 密码进行加密
 def add_salt(password: str):
-    return Hash.encrypt_password(password)
+    salt = 'template'
+    m = hashlib.md5()
+    bt = f"{password}{salt}".encode("utf-8")
+    m.update(bt)
+    return m.hexdigest()

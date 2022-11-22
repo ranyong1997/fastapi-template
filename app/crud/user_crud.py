@@ -23,7 +23,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     :param user: 用户模型
     :return: 根据email和password登录的用户信息
     """
-    hash_password = Hash.encrypt_password(user.password)  # 哈希加密密码
+    hash_password = add_salt(user.password)  # 哈希加密密码
     db_users = models.User(email=user.email, name=user.name,
                            password=hash_password)
     db.add(db_users)  # 添加到会话
@@ -174,8 +174,8 @@ def login(email, password, db: Session):
     :return:
     """
     try:
-        hash_password = Hash.encrypt_password(password)  # 哈希加密密码
-        user = db.query(models.User).filter(models.User.email == email, models.User.password == password).first()
+        hash_password = add_salt(password)  # 哈希加密密码
+        user = db.query(models.User).filter(models.User.email == email, models.User.password == hash_password).first()
         if user is None:
             raise Exception('用户名或密码错误')
         return user
