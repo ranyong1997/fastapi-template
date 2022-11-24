@@ -336,3 +336,4 @@ cython_debug/
 conf/pro.env
 conf/dev.env
 /app/utils/demo.png
+/node_modules/*
