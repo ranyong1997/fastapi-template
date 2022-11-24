@@ -9,19 +9,19 @@
 import inspect
 import os
 from loguru import logger
-from app.config import settings
+from app import Config
 
 
 class Log(object):
     business = None
 
-    def __init__(self, name="app"):
+    def __init__(self, name='fastapi_template'):  # Logger标识默认为app
         """
         :param name: 业务名称
         """
-        if not os.path.exists(settings.log_dir):
-            os.mkdir(settings.log_dir)
-        self.business = name
+        self.name = name
+        if not os.path.exists(Config.log_dir):
+            os.mkdir(Config.log_dir)
 
     def info(self, msg: str):
         """
@@ -30,8 +30,7 @@ class Log(object):
         :return:
         """
         file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_info, func=func, line=line, business=self.business,
-                    filename=file_name).info(msg)
+        logger.bind(name=Config.log_info, func=func, line=line, filename=file_name).info(msg)
 
     def error(self, msg: str):
         """
@@ -39,9 +38,8 @@ class Log(object):
         :param msg:
         :return:
         """
-        file_name, line, func, _, = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_error, func=func, line=line, business=self.business, filename=file_name).error(
-            msg)
+        file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
+        logger.bind(name=Config.log_error, func=func, line=line, business=self.business, filename=file_name).error(msg)
 
     def warning(self, msg: str):
         """
@@ -50,8 +48,7 @@ class Log(object):
         :return:
         """
         file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_warning, func=func, line=line, business=self.business,
-                    filename=file_name).warning(
+        logger.bind(name=Config.log_warning, func=func, line=line, business=self.business, filename=file_name).warning(
             msg)
 
     def debug(self, msg: str):
@@ -61,15 +58,4 @@ class Log(object):
         :return:
         """
         file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_debug, func=func, line=line, business=self.business,
-                    filename=file_name).debug(msg)
-
-    def exception(self, msg: str):
-        """
-        其他日志
-        :param msg:
-        :return:
-        """
-        file_name, line, func, _, _ = inspect.getframeinfo(inspect.currentframe().f_back)
-        logger.bind(name=settings.log_exception, func=func, line=line, business=self.business,
-                    filename=file_name).exception(msg)
+        logger.bind(name=Config.log_debug, func=func, line=line, business=self.business, filename=file_name).debug(msg)

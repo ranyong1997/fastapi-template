@@ -337,3 +337,4 @@ conf/pro.env
 conf/dev.env
 /app/utils/*.png
 /node_modules/*
+*.png

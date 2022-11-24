@@ -41,7 +41,7 @@ app.include_router(views_router)
 # 挂载loguru路由
 logger = init_logging()
 logger.bind(name=None).opt(ansi=True).success(
-    f"fastapi 正在运行环境: <blue>{FASTAPI_ENV} 网址: http://localhost:8000/docs</blue>")
+    f"fastapi 正在运行环境: <blue>{FASTAPI_ENV}【环境】 网址: http://localhost:8000/docs</blue>")
 logger.bind(name=None).success(settings.BANNER)
 
 
@@ -69,5 +69,5 @@ async def init_redis():
         await RedisHelper.ping()
         logger.bind(name=None).success("Redis 连接成功.          ✔")
     except Exception as e:
-        logger.bind(name=None).error("Redis 连接失败，请检查 config.py 中的 redis 配置.          ❌")
+        logger.bind(name=None).error("Redis 连接失败，请检查config.py中的redis配置.          ❌")
         raise e

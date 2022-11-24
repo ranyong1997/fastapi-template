@@ -6,7 +6,7 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 # @desc    :
-from ..models import async_engine, Base
+from models import async_engine, Base
 
 
 # 异步创建连接

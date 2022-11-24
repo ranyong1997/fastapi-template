@@ -6,7 +6,7 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 # @desc    : orm操作
-from ..config.config import Config as config
+from app.config.config import Config as config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker  # 创建session类
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine  # 异步操作、创建engine

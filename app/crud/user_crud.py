@@ -8,11 +8,13 @@
 # @desc    : user_new【curd】
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-
+from app.utils.logger import Log
 from app.dependencies.auth import add_salt
 from app.models import db_user_new as models
 from app.schemas import schema_user_new as schemas
 from app.utils.simpel_captcha import img_captcha
+
+log = Log("user_crud.py")
 
 
 # 创建用户
@@ -30,6 +32,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.flush()
     db.commit()  # 提交到数据库
     db.refresh(db_users)  # 刷新数据库
+    log.info(f"创建用户{user.email}")
     return db_users
 
 
@@ -41,6 +44,7 @@ def get_user(db: Session, user_id: int):
     :param user_id: 用户id
     :return: 用户信息
     """
+    log.info("获取用户")
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
