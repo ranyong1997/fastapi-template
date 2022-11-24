@@ -24,6 +24,13 @@ class Settings(BaseSettings):
     MYSQL_USER: str = None  # 数据库用户名
     MYSQL_PWD: str = None  # 数据库密码
     DBNAME: str = None  # 数据库表名
+    # redis_server:关闭redis可以让job同时运行多次
+    REDIS_ON: bool = None  # redis开关
+    REDIS_HOST: str = None  # redis主机
+    REDIS_PORT: int = None  # redis端口
+    REDIS_DB: int = None  # redis表名
+    REDIS_PASSWORD: str = None  # redis密码
+    REDIS_NODES: List[dict] = []  # redis连接信息
     # sqlalchemy_server
     SQLALCHEMY_DATABASE_URI: str = ''
     # 异步URI
@@ -105,9 +112,15 @@ class ProConfig(Settings):
 FASTAPI_ENV = os.environ.get("fastapi_env", "dev")
 
 # 如果fastapi_env存在且为pro
-config = ProConfig() if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else DevConfig()
+Config = ProConfig() if FASTAPI_ENV and FASTAPI_ENV.lower() == "pro" else DevConfig()
 # 初始化 sqlalchemy（由创建数据引擎）
-config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{config.MYSQL_USER}:{config.MYSQL_PWD}@{config.MYSQL_HOST}:{config.MYSQL_PORT}/{config.DBNAME}'
+Config.SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{Config.MYSQL_USER}:{Config.MYSQL_PWD}@{Config.MYSQL_HOST}:{Config.MYSQL_PORT}/{Config.DBNAME}'
 # 初始化sqlalchemy
-config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{config.MYSQL_USER}:{config.MYSQL_PWD}' \
-                              f'@{config.MYSQL_HOST}:{config.MYSQL_PORT}/{config.DBNAME}'
+Config.ASYNC_SQLALCHEMY_URI = f'mysql+aiomysql://{Config.MYSQL_USER}:{Config.MYSQL_PWD}' \
+                              f'@{Config.MYSQL_HOST}:{Config.MYSQL_PORT}/{Config.DBNAME}'
+# 初始化redis
+Config.REDIS_NODES = [
+    {
+        "host": Config.REDIS_HOST, "port": Config.REDIS_PORT, "db": Config.REDIS_DB, "password": Config.REDIS_PASSWORD
+    }
+]

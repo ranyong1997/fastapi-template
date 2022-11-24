@@ -9,6 +9,7 @@
 import asyncio
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
+from app.middleware.RedisManager import RedisHelper
 from .config.config import FASTAPI_ENV
 from .routers import custom_docs, api_router
 from .config import settings
@@ -56,3 +57,17 @@ async def init_database():
     except Exception as e:
         logger.bind(name=None).error(f"数据库和表创建失败.          ❌ \n Error:{str(e)}")
         raise
+
+
+@app.on_event("startup")
+async def init_redis():
+    """
+    初始化redis,失败则服务不起来
+    :return:
+    """
+    try:
+        await RedisHelper.ping()
+        logger.bind(name=None).success("Redis 连接成功.          ✔")
+    except Exception as e:
+        logger.bind(name=None).error("Redis 连接失败，请检查 config.py 中的 redis 配置.          ❌")
+        raise e

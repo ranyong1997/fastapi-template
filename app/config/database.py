@@ -9,7 +9,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from .config import config
+from .config import Config as config
 
 # 创建数据库引擎
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
