@@ -13,6 +13,6 @@ from fastapi import APIRouter
 router = APIRouter(prefix="/home", include_in_schema=True, tags=['HttpResponseDemo接口'])
 
 
-@router.get("")
+@router.get("", response_class=HTMLResponse)
 def home():
     return HTMLResponse("<h1>HOME</h1>")

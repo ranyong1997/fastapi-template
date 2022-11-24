@@ -1,0 +1,8 @@
+{
+  "name": "fastapi-template",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^1.2.0",
+    "vue": "^3.2.45"
+  }
+}

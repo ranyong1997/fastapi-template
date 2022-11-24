@@ -21,7 +21,7 @@ from app.utils.fatcory import TemplateResponse
 from app.utils.logger import Log
 
 # 生成数据库中的表
-
+from app.utils.simpel_captcha import b64_captcha
 
 models.Base.metadata.create_all(bind=engine)
 router = APIRouter(prefix="/user_new", tags=['用户接口_new'])
@@ -105,5 +105,10 @@ async def login(item: schemas.UserForm, db: Session = Depends(get_db)):
         token = create_access_token({"username": item.email})
         return {"user": user, "access_token": token, "token_type": "bearer"}
     except Exception as e:
-        raise e
-        # return TemplateResponse.failed(e)
+        return TemplateResponse.failed(e)
+
+
+@router.get('/captcha', summary="图片验证码")
+def image_captcha():
+    image, text = b64_captcha()
+    return {"captcha_img": image, "captcha_code": text}

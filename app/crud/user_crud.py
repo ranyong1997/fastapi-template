@@ -7,12 +7,12 @@
 # @Software: PyCharm
 # @desc    : user_new【curd】
 from sqlalchemy.orm import Session
+from starlette.responses import StreamingResponse
 
 from app.dependencies.auth import add_salt
 from app.models import db_user_new as models
 from app.schemas import schema_user_new as schemas
-from app.utils.hash_lib import Hash
-from app.utils.logger import Log
+from app.utils.simpel_captcha import img_captcha
 
 
 # 创建用户
@@ -177,18 +177,14 @@ def login(email, password, db: Session):
         user = db.query(models.User).filter(models.User.email == email, models.User.password == hash_password).first()
         if user is None:
             raise Exception('用户名或密码错误')
-        if not user.is_active:
+        if user.is_active == 0:
             raise Exception("您的账号已被封禁, 请联系管理员")
         return user
     except Exception as e:
         raise e
 
 
-# 获取登录信息
-def login_info(email, password, db: Session):
-    """
-    获取登录信息
-    :param db:
-    :return:
-    """
-    pass
+# 验证码
+def image_captcha():
+    image, text = img_captcha(byte_stream=True)
+    return StreamingResponse(content=image, media_type='image/jpeg')
