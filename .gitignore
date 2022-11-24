@@ -335,4 +335,4 @@ cython_debug/
 /logs
 conf/pro.env
 conf/dev.env
-
+/app/utils/demo.png
