@@ -126,14 +126,17 @@ python main.py
 - [X] 开发接口调试/隐藏
 - [X] 使用loguru日志模块
 - [X] 使用SQLAlchemy数据库
+- [X] 连接redis
 
 待实现功能:
-- [ ] 连接redis
+- [ ] 生成登录验证码
 
 ## 截图
 ![image-20221013164104847](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202210131641293.png)
 
 ![image-20221021151347654](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202210211513751.png)
+
+![20221124111926117](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202211241119334.png)
 
 ## 开发注意事项
 ```shell
